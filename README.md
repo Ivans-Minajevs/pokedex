@@ -5,6 +5,7 @@ A C++ console application that parses the given pokedex.json file and outputs to
 There are two parsing libraries user can switch between at build time:
 1) Nlohmann
 2) Rapid
+During the build process, the FetchContent module in CMake handles the retrieval of the external library based on a specified option. A configuration option determines which JSON parser (Nlohmann or Rapid) is needed for the build, and FetchContent then downloads and includes only the selected library
 
 
 <h2>How to use?</h2>
@@ -39,6 +40,18 @@ Application uses <strong>C++20 version</strong> and <storng>UTF-8 character enco
 
 Application converts objects JSON to <strong>std::vector<std::unordered_map<std::string, std::any>></strong>
 Check [cppreference std::unordered_map](https://en.cppreference.com/w/cpp/container/unordered_map) and [cppreference std::any (since C++17)](https://en.cppreference.com/w/cpp/utility/any) for more info.
+
+
+
+
+
+
+
+
+
+    
+
+
 
 
 
