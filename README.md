@@ -5,6 +5,7 @@ A C++ console application that parses the given pokedex.json file and outputs to
 There are two parsing libraries user can switch between at build time:
 1) Nlohmann
 2) Rapid
+
 During the build process, the FetchContent module in CMake handles the retrieval of the external library based on a specified option. A configuration option determines which JSON parser (Nlohmann or Rapid) is needed for the build, and FetchContent then downloads and includes only the selected library
 
 
