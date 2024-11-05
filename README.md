@@ -40,7 +40,7 @@ Powershell:
 Application uses <strong>C++20 version</strong> and <storng>UTF-8 character encoding</strong>.
 
 Application converts objects JSON to <strong>std::vector<std::unordered_map<std::string, std::any>></strong>
-Check [cppreference std::unordered_map](https://en.cppreference.com/w/cpp/container/unordered_map) and [cppreference std::any (since C++17)](https://en.cppreference.com/w/cpp/utility/any) for more info.
+Check [cppreference std::unordered_map](https://en.cppreference.com/w/cpp/container/unordered_map) and [cppreference std::variant (since C++17)](https://en.cppreference.com/w/cpp/utility/variant) for more info.
 
 
 

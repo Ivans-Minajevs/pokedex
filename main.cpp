@@ -2,8 +2,8 @@
 #include <memory>
 #include <vector>
 #include <string>
-#include <any>
 #include <windows.h>
+#include <variant>
 
 #include "JSONParserCustomLib.h"
 
@@ -15,7 +15,6 @@
     #error "No JSON parser library defined."
 #endif
 
-// Function to create the appropriate parser
 std::unique_ptr<JSONParserCustomLib> create_parser() {
 #if defined(USE_NLOHMANN)
     return std::make_unique<JSONParserNlohmann>();
@@ -30,30 +29,27 @@ int main() {
 
     if (!jsonParser->LoadFromFile("Content/pokedex.json")) {
         std::cerr << jsonParser->GetLastError() << "\n";
-        return 1;  // Exit with an error code
+        return 1;
     }
-    std::vector<std::unordered_map<std::string, std::any>> pokemonData = jsonParser->GetArrayOfObjects("pokemon");
+
+    std::vector<std::unordered_map<std::string, JSONValue>> pokemonData = jsonParser->GetArrayOfObjects("pokemon");
 
     for (const auto& pokemon : pokemonData) {
-        int id = std::any_cast<int>(pokemon.at("id")); // Use at() for safe access
-        std::wstring name = std::any_cast<std::wstring>(pokemon.at("name"));
-        std::vector<std::wstring> types = std::any_cast<std::vector<std::wstring>>(pokemon.at("type"));
- 
-        // Format types into a string
-        std::wstring typesFormatted;
-        for (const auto& type : types) {
-            typesFormatted += type + L", ";
-        }
+        int id = std::get<int>(pokemon.at("id"));
+        std::string name = std::get<std::string>(pokemon.at("name"));
+        std::vector<std::string> types = std::get<std::vector<std::string>>(pokemon.at("type"));
 
-        // Remove the trailing comma and space if types are present
+        std::string typesFormatted;
+        for (const auto& type : types) {
+            typesFormatted += type + ", ";
+        }
         if (!typesFormatted.empty()) {
             typesFormatted = typesFormatted.substr(0, typesFormatted.length() - 2);
         }
 
-        // Print output in the specified format
-        std::wcout << id << ". " << name  << " [" << typesFormatted << "]" << std::endl;
+        std::cout << id << ". " << name << "[" << typesFormatted << "]" << std::endl;
     }
  
-    std::wcin.get();
+    std::cin.get();
     return 0;
 }

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-# Project name
+
 project(Pokedex)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -10,7 +10,7 @@ if (MSVC)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_options("-finput-charset=UTF-8" "-fexec-charset=UTF-8")  # GCC and Clang-specific flags
 endif()
-# Add executable target
+
 add_executable(Pokedex main.cpp)
 
 add_custom_command(
@@ -20,7 +20,6 @@ add_custom_command(
                 $<TARGET_FILE_DIR:${PROJECT_NAME}>/Content)
 
 
-# Include directories for JSON parser libraries
 target_include_directories(Pokedex PUBLIC ./)
 
 # Set the option to choose the JSON parser
@@ -28,13 +27,12 @@ option(USE_NLOHMANN "Use Nlohmann JSON library" OFF)
 option(USE_RAPID "Use RapidJSON library" ON)
 
 include(FetchContent)
-# Include and link the selected JSON parser
 if(USE_NLOHMANN)
     target_sources(Pokedex PRIVATE JSONParserNlohmann.cpp)
     FetchContent_Declare(nlohmann_json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
+
     FetchContent_MakeAvailable(nlohmann_json)
 
-    # Link Nlohmann JSON library
     target_link_libraries(Pokedex PRIVATE nlohmann_json::nlohmann_json)
     add_definitions(-DUSE_NLOHMANN)
 elseif(USE_RAPID)
@@ -42,7 +40,7 @@ elseif(USE_RAPID)
     FetchContent_Declare(
         rapid_json
         GIT_REPOSITORY https://github.com/Tencent/rapidjson.git
-        GIT_TAG master  # Use the latest version, or specify a tag
+        GIT_TAG master
         
     )
     set(RAPIDJSON_BUILD_TESTS OFF CACHE INTERNAL "")
@@ -54,7 +52,6 @@ elseif(USE_RAPID)
     
     FetchContent_MakeAvailable(rapid_json)
 
-    # Include RapidJSON headers
     target_include_directories(Pokedex PRIVATE ${rapid_json_SOURCE_DIR}/include)
     add_definitions(-DUSE_RAPID)
 else()
